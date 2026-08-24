@@ -25,6 +25,40 @@ class TestDemandEndpoints:
             assert "forecasted_demand" in forecast
             assert "trend" in forecast
             assert "period" in forecast
+            assert "current_stock" in forecast
+            assert "unit_cost" in forecast
+            assert "lead_time_days" in forecast
+            assert "supplier_name" in forecast
+
+    def test_demand_forecast_restocking_fields_types(self, client):
+        """Test that the restocking-related demand forecast fields have valid types/ranges."""
+        response = client.get("/api/demand")
+        data = response.json()
+
+        for forecast in data:
+            assert isinstance(forecast["current_stock"], int)
+            assert forecast["current_stock"] >= 0
+            assert isinstance(forecast["lead_time_days"], int)
+            assert forecast["lead_time_days"] >= 0
+            assert isinstance(forecast["unit_cost"], (int, float))
+            assert forecast["unit_cost"] > 0
+            assert isinstance(forecast["supplier_name"], str)
+            assert len(forecast["supplier_name"]) > 0
+
+    def test_demand_forecast_shortfall_variety(self, client):
+        """Test that demand forecast data has both restock-needed and no-restock-needed items."""
+        response = client.get("/api/demand")
+        data = response.json()
+
+        shortfalls = [item["forecasted_demand"] - item["current_stock"] for item in data]
+
+        positive_shortfalls = [s for s in shortfalls if s > 0]
+        non_positive_shortfalls = [s for s in shortfalls if s <= 0]
+
+        assert len(positive_shortfalls) >= 2, \
+            "Expected at least 2 items with a positive restock shortfall"
+        assert len(non_positive_shortfalls) >= 1, \
+            "Expected at least 1 item with no restock shortfall"
 
     def test_demand_forecast_trends(self, client):
         """Test that demand forecasts have valid trend values."""

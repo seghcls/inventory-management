@@ -2,6 +2,7 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from typing import List, Optional
 from pydantic import BaseModel
+from datetime import datetime, timedelta
 from mock_data import inventory_items, orders, demand_forecasts, backlog_items, spending_summary, monthly_spending, category_spending, recent_transactions, purchase_orders
 
 app = FastAPI(title="Factory Inventory Management System")
@@ -89,6 +90,10 @@ class DemandForecast(BaseModel):
     forecasted_demand: int
     trend: str
     period: str
+    current_stock: int
+    unit_cost: float
+    lead_time_days: int
+    supplier_name: str
 
 class BacklogItem(BaseModel):
     id: str
@@ -103,21 +108,26 @@ class BacklogItem(BaseModel):
 
 class PurchaseOrder(BaseModel):
     id: str
-    backlog_item_id: str
+    backlog_item_id: Optional[str] = None
+    item_sku: Optional[str] = None
+    item_name: Optional[str] = None
     supplier_name: str
     quantity: int
     unit_cost: float
+    lead_time_days: int
     expected_delivery_date: str
     status: str
     created_date: str
     notes: Optional[str] = None
 
 class CreatePurchaseOrderRequest(BaseModel):
-    backlog_item_id: str
+    backlog_item_id: Optional[str] = None
+    item_sku: Optional[str] = None
+    item_name: Optional[str] = None
     supplier_name: str
     quantity: int
     unit_cost: float
-    expected_delivery_date: str
+    lead_time_days: int
     notes: Optional[str] = None
 
 # API endpoints
@@ -178,6 +188,37 @@ def get_backlog():
         item_dict["has_purchase_order"] = has_po
         result.append(item_dict)
     return result
+
+@app.get("/api/purchase-orders", response_model=List[PurchaseOrder])
+def get_purchase_orders():
+    """Get all purchase orders (includes restocking orders)"""
+    return purchase_orders
+
+@app.post("/api/purchase-orders", response_model=PurchaseOrder, status_code=201)
+def create_purchase_order(request: CreatePurchaseOrderRequest):
+    """Create a purchase order (used by restocking recommendations)"""
+    existing_ids = [int(po["id"]) for po in purchase_orders if str(po["id"]).isdigit()]
+    new_id = str(max(existing_ids, default=0) + 1)
+
+    created_date = datetime.now().strftime("%Y-%m-%d")
+    expected_delivery_date = (datetime.now() + timedelta(days=request.lead_time_days)).strftime("%Y-%m-%d")
+
+    new_order = {
+        "id": new_id,
+        "backlog_item_id": request.backlog_item_id,
+        "item_sku": request.item_sku,
+        "item_name": request.item_name,
+        "supplier_name": request.supplier_name,
+        "quantity": request.quantity,
+        "unit_cost": request.unit_cost,
+        "lead_time_days": request.lead_time_days,
+        "expected_delivery_date": expected_delivery_date,
+        "status": "Submitted",
+        "created_date": created_date,
+        "notes": request.notes,
+    }
+    purchase_orders.append(new_order)
+    return new_order
 
 @app.get("/api/dashboard/summary")
 def get_dashboard_summary(

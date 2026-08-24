@@ -6,8 +6,11 @@ export default {
     orders: 'Orders',
     finance: 'Finance',
     demandForecast: 'Demand Forecast',
+    restocking: 'Restocking',
     companyName: 'Catalyst Components',
-    subtitle: 'Inventory Management System'
+    subtitle: 'Inventory Management System',
+    collapseSidebar: 'Collapse sidebar',
+    expandSidebar: 'Expand sidebar'
   },
 
   // Dashboard
@@ -126,6 +129,18 @@ export default {
       status: 'Status',
       expectedDelivery: 'Expected Delivery',
       actualDelivery: 'Actual Delivery'
+    },
+    submittedOrders: 'Submitted Orders',
+    noSubmittedOrders: 'No restocking orders submitted yet.',
+    submittedTable: {
+      item: 'Item',
+      supplier: 'Supplier',
+      quantity: 'Quantity',
+      unitCost: 'Unit Cost',
+      total: 'Total',
+      leadTime: 'Lead Time (days)',
+      expectedDelivery: 'Expected Delivery',
+      status: 'Status'
     }
   },
 
@@ -186,6 +201,33 @@ export default {
       trend: 'Trend',
       period: 'Period'
     }
+  },
+
+  // Restocking
+  restocking: {
+    title: 'Restocking',
+    description: 'Generate purchase order recommendations from demand forecasts within a budget',
+    budgetLabel: 'Available Budget',
+    availableBudget: 'Available Budget',
+    recommendedItems: 'Recommended Items',
+    totalRecommendedCost: 'Total Recommended Cost',
+    remainingBudget: 'Remaining Budget',
+    table: {
+      sku: 'SKU',
+      itemName: 'Item Name',
+      trend: 'Trend',
+      shortfall: 'Shortfall',
+      unitCost: 'Unit Cost',
+      recommendedQty: 'Recommended Qty',
+      lineTotal: 'Line Total',
+      leadTime: 'Lead Time (days)',
+      supplier: 'Supplier'
+    },
+    placeOrder: 'Place Order',
+    placingOrder: 'Placing Order...',
+    emptyRecommendations: 'No items to recommend at this budget. Increase your budget to see recommendations.',
+    submitSuccess: '{count} restocking order(s) placed successfully. View them in the Orders tab.',
+    submitError: 'Failed to place restocking orders: '
   },
 
   // Filters

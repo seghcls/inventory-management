@@ -6,7 +6,11 @@
     "current_demand": 300,
     "forecasted_demand": 450,
     "trend": "increasing",
-    "period": "Next 30 days"
+    "period": "Next 30 days",
+    "current_stock": 150,
+    "unit_cost": 45.00,
+    "lead_time_days": 12,
+    "supplier_name": "Acme Steel Works"
   },
   {
     "id": "2",
@@ -15,7 +19,11 @@
     "current_demand": 150,
     "forecasted_demand": 152,
     "trend": "stable",
-    "period": "Next 30 days"
+    "period": "Next 30 days",
+    "current_stock": 140,
+    "unit_cost": 8.50,
+    "lead_time_days": 7,
+    "supplier_name": "Precision Bearings Co"
   },
   {
     "id": "3",
@@ -24,7 +32,11 @@
     "current_demand": 500,
     "forecasted_demand": 600,
     "trend": "increasing",
-    "period": "Next 30 days"
+    "period": "Next 30 days",
+    "current_stock": 200,
+    "unit_cost": 3.25,
+    "lead_time_days": 5,
+    "supplier_name": "Thermal Seal Industries"
   },
   {
     "id": "4",
@@ -33,7 +45,11 @@
     "current_demand": 50,
     "forecasted_demand": 35,
     "trend": "decreasing",
-    "period": "Next 30 days"
+    "period": "Next 30 days",
+    "current_stock": 60,
+    "unit_cost": 220.00,
+    "lead_time_days": 21,
+    "supplier_name": "Volt Motors Inc"
   },
   {
     "id": "5",
@@ -42,7 +58,11 @@
     "current_demand": 800,
     "forecasted_demand": 950,
     "trend": "increasing",
-    "period": "Next 30 days"
+    "period": "Next 30 days",
+    "current_stock": 500,
+    "unit_cost": 4.75,
+    "lead_time_days": 10,
+    "supplier_name": "Filtration Dynamics"
   },
   {
     "id": "6",
@@ -51,7 +71,11 @@
     "current_demand": 120,
     "forecasted_demand": 121,
     "trend": "stable",
-    "period": "Next 30 days"
+    "period": "Next 30 days",
+    "current_stock": 130,
+    "unit_cost": 15.00,
+    "lead_time_days": 14,
+    "supplier_name": "FlowGuard Valves"
   },
   {
     "id": "7",
@@ -60,7 +84,11 @@
     "current_demand": 250,
     "forecasted_demand": 252,
     "trend": "stable",
-    "period": "Next 30 days"
+    "period": "Next 30 days",
+    "current_stock": 180,
+    "unit_cost": 12.00,
+    "lead_time_days": 25,
+    "supplier_name": "PowerTech Supply"
   },
   {
     "id": "8",
@@ -69,7 +97,11 @@
     "current_demand": 180,
     "forecasted_demand": 182,
     "trend": "stable",
-    "period": "Next 30 days"
+    "period": "Next 30 days",
+    "current_stock": 150,
+    "unit_cost": 6.50,
+    "lead_time_days": 18,
+    "supplier_name": "SensorMax Corp"
   },
   {
     "id": "9",
@@ -78,6 +110,10 @@
     "current_demand": 95,
     "forecasted_demand": 96,
     "trend": "stable",
-    "period": "Next 30 days"
+    "period": "Next 30 days",
+    "current_stock": 40,
+    "unit_cost": 55.00,
+    "lead_time_days": 30,
+    "supplier_name": "LogicBoard Systems"
   }
 ]
