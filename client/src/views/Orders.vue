@@ -74,6 +74,45 @@
           </table>
         </div>
       </div>
+
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title">{{ t('orders.submittedOrders') }} ({{ submittedOrders.length }})</h3>
+        </div>
+        <div v-if="submittedOrders.length === 0" class="loading">
+          {{ t('orders.noSubmittedOrders') }}
+        </div>
+        <div v-else class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>{{ t('orders.submittedTable.item') }}</th>
+                <th>{{ t('orders.submittedTable.supplier') }}</th>
+                <th>{{ t('orders.submittedTable.quantity') }}</th>
+                <th>{{ t('orders.submittedTable.unitCost') }}</th>
+                <th>{{ t('orders.submittedTable.total') }}</th>
+                <th>{{ t('orders.submittedTable.leadTime') }}</th>
+                <th>{{ t('orders.submittedTable.expectedDelivery') }}</th>
+                <th>{{ t('orders.submittedTable.status') }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="po in submittedOrders" :key="po.id">
+                <td>{{ po.item_name || po.item_sku }}</td>
+                <td>{{ po.supplier_name }}</td>
+                <td>{{ po.quantity }}</td>
+                <td>{{ currencySymbol }}{{ po.unit_cost }}</td>
+                <td><strong>{{ currencySymbol }}{{ (po.quantity * po.unit_cost).toLocaleString() }}</strong></td>
+                <td>{{ po.lead_time_days }}</td>
+                <td>{{ formatDate(po.expected_delivery_date) }}</td>
+                <td>
+                  <span :class="['badge', 'info']">{{ po.status }}</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -95,6 +134,7 @@ export default {
     const loading = ref(true)
     const error = ref(null)
     const orders = ref([])
+    const submittedOrders = ref([])
 
     // Use shared filters
     const {
@@ -129,6 +169,14 @@ export default {
       loadOrders()
     })
 
+    const loadPurchaseOrders = async () => {
+      try {
+        submittedOrders.value = await api.getPurchaseOrders()
+      } catch (err) {
+        console.error('Failed to load purchase orders:', err)
+      }
+    }
+
     const getOrdersByStatus = (status) => {
       return orders.value.filter(order => order.status === status)
     }
@@ -153,13 +201,18 @@ export default {
       })
     }
 
-    onMounted(loadOrders)
+    onMounted(() => {
+      loadOrders()
+      loadPurchaseOrders()
+    })
 
     return {
       t,
       loading,
       error,
       orders,
+      submittedOrders,
+      loadPurchaseOrders,
       getOrdersByStatus,
       getOrderStatusClass,
       formatDate,
